@@ -1,0 +1,52 @@
+{
+  "name": "example.web.app",
+  "version": "1.0.0",
+  "description": "Example Web App",
+  "author": {
+    "name": "artemkv",
+    "email": "artemkv@gmail.com"
+  },
+  "dependencies": {
+    "firebase": "^9.5.0",
+    "firebaseui": "^6.0.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.16.0",
+    "@babel/core": "^7.16.0",
+    "@babel/preset-env": "^7.16.4",
+    "@babel/preset-react": "^7.16.0",
+    "@webpack-cli/serve": "^1.6.0",
+    "babel-loader": "^8.2.3",
+    "copy-webpack-plugin": "^10.0.0",
+    "css-loader": "^6.5.1",
+    "eslint": "^7.0.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.1.1",
+    "eslint-plugin-react": "^7.27.1",
+    "html-webpack-plugin": "^5.5.0",
+    "lightercollective": "^0.3.1",
+    "qunit": "^2.17.2",
+    "rimraf": "^3.0.2",
+    "sass": "^1.43.4",
+    "sass-loader": "^12.3.0",
+    "style-loader": "^3.3.1",
+    "webpack": "^5.64.2",
+    "webpack-cli": "^4.9.1",
+    "webpack-dev-server": "^4.5.0",
+    "webpack-merge": "^5.8.0"
+  },
+  "scripts": {
+    "clean": "rimraf dist",
+    "test": "qunit",
+    "build:dev": "webpack --config webpack.dev.js",
+    "build:prod": "webpack --config webpack.prod.js",
+    "dev": "npm run clean && npm run test && npm run build:dev",
+    "prod": "npm run clean && npm run test && npm run build:prod",
+    "start": "npm run dev && webpack-dev-server --config webpack.dev.js --hot",
+    "startprod": "npm run prod && webpack-dev-server --config webpack.prod.js"
+  }
+}
