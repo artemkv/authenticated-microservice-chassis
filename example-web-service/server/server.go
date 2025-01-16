@@ -21,10 +21,13 @@ type ServerConfiguration struct {
 // Starts serving requests on a specified port with graceful shutdown support
 // Blocks the calling thread
 // port is a string in Gin format, e.g. ":8600"
-//    when port is an empty string, serves on default HTTP port
+//
+//	when port is an empty string, serves on default HTTP port
+//
 // config allows to configure https
 // callback is called after the server has been setup to serve
-//    callback is passed the actual port the server is listening on
+//
+//	callback is passed the actual port the server is listening on
 func Serve(router *gin.Engine, port string, config *ServerConfiguration, callback func()) {
 	// based on example from https://github.com/gin-gonic/examples
 	ctx, restoreInterrupt := getNotifyContextForInterruptSignals()
@@ -48,10 +51,10 @@ func waitForInterruptSignal(ctx context.Context) {
 	<-ctx.Done()
 }
 
-func startServingAsync(router *gin.Engine, port string, config *ServerConfiguration) http.Server {
+func startServingAsync(router *gin.Engine, port string, config *ServerConfiguration) *http.Server {
 	log.Printf("Starting server on port %s (TLS: %v)", port, config.UseTls)
 
-	httpServer := http.Server{
+	httpServer := &http.Server{
 		Addr:    port,
 		Handler: router,
 	}
@@ -65,21 +68,21 @@ func startServingAsync(router *gin.Engine, port string, config *ServerConfigurat
 	return httpServer
 }
 
-func listenAndServe(httpServer http.Server) {
+func listenAndServe(httpServer *http.Server) {
 	err := httpServer.ListenAndServe()
 	if err != nil && err != http.ErrServerClosed {
 		log.Fatalf("Error serving: %s\n", err)
 	}
 }
 
-func listenAndServeTLS(httpServer http.Server, certFile string, keyFile string) {
+func listenAndServeTLS(httpServer *http.Server, certFile string, keyFile string) {
 	err := httpServer.ListenAndServeTLS(certFile, keyFile)
 	if err != nil && err != http.ErrServerClosed {
 		log.Fatalf("Error serving with TLS: %s\n", err)
 	}
 }
 
-func shutDownWithTimeout(httpServer http.Server, timeout time.Duration) {
+func shutDownWithTimeout(httpServer *http.Server, timeout time.Duration) {
 	log.Println("Shutting down gracefully, press Ctrl+C again to force")
 
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
