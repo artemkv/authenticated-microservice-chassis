@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"slices"
 
 	"github.com/golang-jwt/jwt"
 	"github.com/lestrrat-go/jwx/jwk"
@@ -12,7 +13,7 @@ import (
 // TODO: use your own config
 var googleApisKeysUrl = "https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com"
 var tokenIssuer = ""
-var tokenAudience = ""
+var tokenAudiences = []string{""}
 
 var keySet jwk.Set
 
@@ -47,7 +48,7 @@ func parseAndValidateIdToken(idToken string) (*parsedTokenData, error) {
 	}
 
 	// The audience (aud) claim should match the app client ID that was created in the Firebase
-	if claims.Audience != tokenAudience {
+	if !slices.Contains(tokenAudiences, claims.Audience) {
 		return nil, fmt.Errorf("wrong value of audience: %s", claims.Audience)
 	}
 	// The issuer (iss) claim should match your user pool
